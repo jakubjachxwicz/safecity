@@ -5,6 +5,26 @@
              x:Class="SafeCityMobile.App">
     <Application.Resources>
         <ResourceDictionary>
+            <Color x:Key="TitleBackground">#1A2633</Color>
+            <Color x:Key="White">#FFFFFF</Color>
+            <Color x:Key="BlueishGray">#91ADC9</Color>
+            <Color x:Key="AppBackground">#121A21</Color>
+            <Color x:Key="DarkButton">#243647</Color>
+            <Color x:Key="LightButton">#1280ED</Color>
+            <Color x:Key="CoolRed">#E32636</Color>
+            <Color x:Key="RedButton">#FF383C</Color>
+
+            <Style x:Key="DarkButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource DarkButton}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{StaticResource White}"/>
+                <Setter Property="HeightRequest" Value="48"/>
+                <Setter Property="Margin" Value="8"/>
+            </Style>
+            <Style x:Key="LightButtonStyle" BasedOn="{StaticResource DarkButtonStyle}" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightButton}"/>
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
