@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SafeCityMobile.Views.Settings.SettingsPage"
+             xmlns:vm="clr-namespace:SafeCityMobile.ViewModels.Settings">
+
+    <ContentPage.BindingContext>
+        <vm:SettingsViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid BackgroundColor="{StaticResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Ustawienia"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center"
+           TextColor="{StaticResource White}"
+           FontAttributes="Bold"
+           FontSize="18"
+           BackgroundColor="{StaticResource TitleBackground}"/>
+
+        <Grid Grid.Row="1"
+              Margin="16"
+              RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+
+            <Label Text="Wygląd"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource White}"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32" />
+                    <RowDefinition Height="28" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Typ mapy"
+                       TextColor="{StaticResource White}"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="End"
+                       FontSize="16"/>
+
+                <Label Grid.Row="1"
+                       Text="Drogowa"
+                       FontSize="14"
+                       TextColor="{StaticResource BlueishGray}"/>
+
+                <Image Grid.Column="1"
+                       Grid.RowSpan="2"
+                       Source="arrowdown.png"/>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32" />
+                    <RowDefinition Height="28" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Motyw"
+                       TextColor="{StaticResource White}"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="End"
+                       FontSize="16"/>
+
+                <Label Grid.Row="1"
+                       Text="Jasny"
+                       FontSize="14"
+                       TextColor="{StaticResource BlueishGray}"/>
+
+                <Image Grid.Column="1"
+                       Grid.RowSpan="2"
+                       Source="arrowdown.png"/>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Powiadomienia"
+                       TextColor="{StaticResource White}"
+                       FontSize="16"/>
+
+                <Switch Grid.Column="1"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

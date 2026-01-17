@@ -3,13 +3,24 @@
     x:Class="SafeCityMobile.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SafeCityMobile"
-    Shell.FlyoutBehavior="Disabled"
-    Title="SafeCityMobile">
+    xmlns:map="clr-namespace:SafeCityMobile.Views.Map"
+    xmlns:account="clr-namespace:SafeCityMobile.Views.Account"
+    xmlns:settings="clr-namespace:SafeCityMobile.Views.Settings"
+    Title="SafeCityMobile"
+    Shell.NavBarIsVisible="False"
+    TabBarBackgroundColor="{StaticResource TitleBackground}"
+    TabBarUnselectedColor="{StaticResource BlueishGray}"
+    TabBarForegroundColor="{StaticResource White}">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar>
+        <Tab Icon="mapicon.png">
+            <ShellContent ContentTemplate="{DataTemplate map:MapPage}" />
+        </Tab>
+        <Tab Icon="person.png" Route="Account">
+            <ShellContent ContentTemplate="{DataTemplate account:AccountPage}" />
+        </Tab>
+        <Tab Icon="settings.png">
+            <ShellContent ContentTemplate="{DataTemplate settings:SettingsPage}" />
+        </Tab>
+    </TabBar>
 </Shell>
