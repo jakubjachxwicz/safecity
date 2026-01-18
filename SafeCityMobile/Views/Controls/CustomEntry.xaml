@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SafeCityMobile.Views.Controls.CustomEntry">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="SafeCityMobile.Views.Controls.CustomEntry"
+             x:Name="RootControl">
+
+    <Border BackgroundColor="{StaticResource DarkButton}"
+            Stroke="Transparent"
+            StrokeShape="RoundRectangle 10"
+            Padding="8"
+            Margin="4">
+        <Entry x:Name="InnerEntry"
+               Text="{Binding Text, Source={x:Reference RootControl}}"
+               Placeholder="{Binding Placeholder, Source={x:Reference RootControl}}"
+               IsPassword="{Binding IsPassword, Source={x:Reference RootControl}}"
+               TextColor="{StaticResource BlueishGray}"
+               PlaceholderColor="{StaticResource BlueishGray}"
+               FontSize="16"/>
+    </Border>
 </ContentView>

@@ -14,11 +14,6 @@ public partial class AccountPage : ContentPage
 
         _authService = authService;
 
-        if (!_authService.IsLoggedIn())
-        {
-            //Shell.Current.GoToAsync(nameof(LoginPage));
-        }
-
         _viewModel = viewModel;
         BindingContext = _viewModel;
     }
@@ -26,6 +21,11 @@ public partial class AccountPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        if (!_authService.IsLoggedIn())
+        {
+            await Shell.Current.GoToAsync(nameof(LoginPage));
+        }
 
         await _viewModel.InitializeDataAsync();
     }

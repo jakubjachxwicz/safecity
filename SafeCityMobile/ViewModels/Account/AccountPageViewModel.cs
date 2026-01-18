@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using SafeCityMobile.User;
 using SafeCityMobile.User.Repositories;
+using SafeCityMobile.Views.Account;
 using System.ComponentModel;
 using System.Diagnostics;
 
@@ -95,14 +96,14 @@ public class AccountPageViewModel : INotifyPropertyChanged
 
     private async Task ChangePasswordHandler()
     {
-        //await Shell.Current.GoToAsync(nameof(ChangePasswordPage));
+        await Shell.Current.GoToAsync(nameof(ChangePasswordPage));
     }
 
     private async Task LogoutHandler()
     {
         _userService.LogoutUser();
 
-        //await Shell.Current.GoToAsync(nameof(LoginPage));
+        await Shell.Current.GoToAsync(nameof(LoginPage));
     }
 
     void OnPropertyChanged(string propertyName) =>
