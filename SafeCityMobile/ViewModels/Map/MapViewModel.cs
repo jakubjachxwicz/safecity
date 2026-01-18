@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using SafeCityMobile.Geolocating;
 using SafeCityMobile.Reporting;
+using SafeCityMobile.Views.Map;
 using System.ComponentModel;
 
 namespace SafeCityMobile.ViewModels.Map;
@@ -92,7 +93,7 @@ public class MapViewModel : INotifyPropertyChanged
                 { "longitude", Longitude }
             };
 
-            //await Shell.Current.GoToAsync(nameof(ReportingPage), locationDict);
+            await Shell.Current.GoToAsync(nameof(ReportingPage), locationDict);
         }
 
         InfoText = "Nie ustawiono lokalizacji użytkownika";
@@ -135,8 +136,10 @@ public class MapViewModel : INotifyPropertyChanged
             var latStr = _mapHelpers.StringifyCoordinate(report.Latitude);
             var lonStr = _mapHelpers.StringifyCoordinate(report.Longitude);
             var id = report.Id.ToString();
+            var category = report.Category;
 
-            await Map.EvaluateJavaScriptAsync($"addMarker('{id}', {latStr}, {lonStr})");
+            var jsInvocation = $"addMarker('{id}', {latStr}, {lonStr}, '{category}')";
+            await Map.EvaluateJavaScriptAsync($"addMarker('{id}', {latStr}, {lonStr}, '{category}')");
         }
     }
 

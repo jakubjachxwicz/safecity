@@ -29,7 +29,7 @@ public class ReportRepository : IReportRepository
 
     public async Task<ApiResponse<Report>> SaveReportAsync(ReportRequestDto report)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, "/api/drone-reports");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/api/reports");
         request.Content = JsonContent.Create(report);
 
         var token = await _authService.GetTokenAsync();
@@ -53,7 +53,7 @@ public class ReportRepository : IReportRepository
 
     public async Task<ApiResponse<List<Report>>> GetAllReportsAsync()
     {
-        var response = await _client.GetAsync("/api/drone-reports/active");
+        var response = await _client.GetAsync("/api/reports/active");
         var stringResponse = await response.Content.ReadAsStringAsync();
 
         if (response.IsSuccessStatusCode)
