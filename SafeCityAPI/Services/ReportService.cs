@@ -213,4 +213,91 @@ public class ReportService : IReportService
             IpAddress = r.IpAddress
         }).ToList();
     }
+    
+    public async Task<ReportResponse> UpdateReportAsync(Guid reportId, UpdateReportRequest request, Guid userId)
+    {
+        _logger.LogInformation("User {UserId} attempting to update report {ReportId}", userId, reportId);
+
+        var report = await _context.Reports.FindAsync(reportId);
+
+        if (report == null)
+        {
+            _logger.LogWarning("Report {ReportId} not found", reportId);
+            throw new KeyNotFoundException($"Report with ID {reportId} not found");
+        }
+        
+        if (report.UserId != userId)
+        {
+            _logger.LogWarning("User {UserId} attempted to update report {ReportId} owned by {OwnerId}", 
+                userId, reportId, report.UserId);
+            throw new UnauthorizedAccessException("You can only edit your own reports");
+        }
+        
+        if (request.Latitude.HasValue)
+        {
+            if (request.Latitude is < -90 or > 90)
+                throw new ArgumentException("Latitude must be between -90 and 90");
+            report.Latitude = request.Latitude.Value;
+        }
+
+        if (request.Longitude.HasValue)
+        {
+            if (request.Longitude is < -180 or > 180)
+                throw new ArgumentException("Longitude must be between -180 and 180");
+            report.Longitude = request.Longitude.Value;
+        }
+
+        if (request.Category.HasValue)
+        {
+            report.Category = request.Category.Value;
+        }
+
+        if (request.Description != null)
+        {
+            report.Message = request.Description.Trim();
+        }
+
+        await _context.SaveChangesAsync();
+
+        _logger.LogInformation("Report {ReportId} updated successfully by user {UserId}", reportId, userId);
+
+        return new ReportResponse
+        {
+            Id = report.Id,
+            ReportedAt = report.ReportedAt,
+            Latitude = report.Latitude,
+            Longitude = report.Longitude,
+            Category = report.Category,
+            Message = report.Message,
+            UserId = report.UserId,
+            IpAddress = report.IpAddress
+        };
+    }
+    
+    public async Task<bool> DeleteReportAsync(Guid reportId, Guid userId)
+    {
+        _logger.LogInformation("User {UserId} attempting to delete report {ReportId}", userId, reportId);
+
+        var report = await _context.Reports.FindAsync(reportId);
+
+        if (report == null)
+        {
+            _logger.LogWarning("Report {ReportId} not found", reportId);
+            return false;
+        }
+
+        if (report.UserId != userId)
+        {
+            _logger.LogWarning("User {UserId} attempted to delete report {ReportId} owned by {OwnerId}", 
+                userId, reportId, report.UserId);
+            throw new UnauthorizedAccessException("You can only delete your own reports");
+        }
+
+        _context.Reports.Remove(report);
+        await _context.SaveChangesAsync();
+
+        _logger.LogInformation("Report {ReportId} deleted successfully by user {UserId}", reportId, userId);
+
+        return true;
+    }
 }

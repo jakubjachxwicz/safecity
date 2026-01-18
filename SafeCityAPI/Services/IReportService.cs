@@ -16,4 +16,6 @@ public interface IReportService
         double? maxLat = null, 
         double? minLon = null, 
         double? maxLon = null);
+    Task<ReportResponse> UpdateReportAsync(Guid reportId, UpdateReportRequest request, Guid userId);
+    Task<bool> DeleteReportAsync(Guid reportId, Guid userId);
 }
