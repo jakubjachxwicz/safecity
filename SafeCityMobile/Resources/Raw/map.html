@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Map</title>
+
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet.js"></script>
+
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([50.0727693, 19.9275471], 12);
+
+        var trafficPin = L.icon({
+            iconUrl: 'trafficpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+        var trashPin = L.icon({
+            iconUrl: 'trashpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+        var fightPin = L.icon({
+            iconUrl: 'fightpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+        var illegalParkingPin = L.icon({
+            iconUrl: 'illegalparkingpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+        var illegalGatheringPin = L.icon({
+            iconUrl: 'illegalgatheringpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+        var otherPin = L.icon({
+            iconUrl: 'otherpin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '� OpenStreetMap contributors'
+        }).addTo(map);
+
+        var markers = {};
+        var userLocation;
+
+        // add categories handling
+        function addMarker(id, lat, lng) {
+            if (markers[id]) {
+                map.removeLayer(markers[id]);
+            }
+
+            //var icon = verified ? bluePin : grayPin;
+            var icon = otherPin;
+
+            var marker = L.marker([lat, lng], { icon: icon }).addTo(map);
+
+            marker.on('click', function () {
+                window.location.href = `maui://report/${id}`;
+            });
+
+            markers[id] = marker;
+        }
+
+        function removeMarker(id) {
+            if (markers[id]) {
+                map.removeLayer(markers[id]);
+                delete markers[id];
+            }
+        }
+
+        function clearAllMarkers() {
+            for (var id in markers) {
+                map.removeLayer(markers[id]);
+            }
+            markers = {};
+        }
+
+        function setUserLocationMarker(lat, lng) {
+            if (userLocation) {
+                map.removeLayer(userLocation);
+            }
+
+            userLocation = L.circleMarker([lat, lng], { radius: 8 }).addTo(map);
+        }
+
+        function setViewWrapper(lat, lon, zoom) {
+            map.setView([lat, lon], zoom);
+        }
+    </script>
+</body>
+</html>
