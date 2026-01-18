@@ -93,6 +93,7 @@ public class UserService : IUserService
 
         return new AuthResponse
         {
+            UserId = user.Id,
             Username = user.Username,
             Email = user.Email,
             Role = user.Role,
@@ -131,6 +132,7 @@ public class UserService : IUserService
 
         return new AuthResponse
         {
+            UserId = user.Id,
             Username = user.Username,
             Email = user.Email,
             Role = user.Role,
