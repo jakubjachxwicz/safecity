@@ -75,6 +75,8 @@ namespace SafeCityMobile
             builder.Services.AddTransient<ReportDetailsViewModel>();
             builder.Services.AddTransient<ReportingViewModel>();
             builder.Services.AddTransient<MapViewModel>();
+            builder.Services.AddTransient<EditReportPage>();
+            builder.Services.AddTransient<EditReportViewModel>();
             builder.Services.AddTransient<VerifyCodePage>();
             builder.Services.AddTransient<SendCodePage>();
             builder.Services.AddTransient<RegisterPage>();
