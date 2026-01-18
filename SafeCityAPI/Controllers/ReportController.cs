@@ -218,6 +218,95 @@ public class ReportsController : ControllerBase
         });
     }
     
+     /// <summary>
+    /// Edytuj swoje zgłoszenie (tylko dla zalogowanych użytkowników)
+    /// </summary>
+    [HttpPut("{id}")]
+    [Authorize]
+    [ProducesResponseType(typeof(ReportResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateReport(Guid id, [FromBody] UpdateReportRequest request)
+    {
+        try
+        {
+            var userId = GetUserIdFromAuthenticatedToken();
+            
+            if (userId == null)
+            {
+                _logger.LogWarning("Failed to extract user ID from authenticated token");
+                return Unauthorized(new { error = "Invalid token" });
+            }
+
+            var result = await _service.UpdateReportAsync(id, request, userId.Value);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning("Report not found: {Message}", ex.Message);
+            return NotFound(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning("Unauthorized access: {Message}", ex.Message);
+            return StatusCode(StatusCodes.Status403Forbidden, new { error = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning("Validation error: {Message}", ex.Message);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating report {ReportId}", id);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+
+    /// <summary>
+    /// Usuń swoje zgłoszenie (tylko dla zalogowanych użytkowników)
+    /// </summary>
+    [HttpDelete("{id}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteReport(Guid id)
+    {
+        try
+        {
+            var userId = GetUserIdFromAuthenticatedToken();
+            
+            if (userId == null)
+            {
+                _logger.LogWarning("Failed to extract user ID from authenticated token");
+                return Unauthorized(new { error = "Invalid token" });
+            }
+
+            var deleted = await _service.DeleteReportAsync(id, userId.Value);
+            
+            if (!deleted)
+            {
+                return NotFound(new { error = "Report not found" });
+            }
+
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning("Unauthorized access: {Message}", ex.Message);
+            return StatusCode(StatusCodes.Status403Forbidden, new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting report {ReportId}", id);
+            return StatusCode(500, new { error = "Internal server error" });
+        }
+    }
+    
     private Guid? GetUserIdFromAuthenticatedToken()
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated)
