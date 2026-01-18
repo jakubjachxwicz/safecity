@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
 using SafeCityMobile.Common;
+using SafeCityMobile.Geolocating;
+using SafeCityMobile.Reporting;
 using SafeCityMobile.User;
 using SafeCityMobile.User.Repositories;
 using SafeCityMobile.ViewModels.Account;
+using SafeCityMobile.ViewModels.Map;
 using SafeCityMobile.Views.Account;
 using SafeCityMobile.Views.Account.ForgotPassword;
+using SafeCityMobile.Views.Map;
 using SafeCityMobile.Views.Settings;
 using System.Text.Json;
 
@@ -34,6 +39,15 @@ namespace SafeCityMobile
             builder.Logging.AddDebug();
 #endif
 
+            WebViewHandler.Mapper.AppendToMapping("AllowLocal", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Settings.AllowFileAccess = true;
+                handler.PlatformView.Settings.AllowFileAccessFromFileURLs = true;
+                handler.PlatformView.Settings.AllowUniversalAccessFromFileURLs = true;
+#endif
+            });
+
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<AppState>();
@@ -41,11 +55,15 @@ namespace SafeCityMobile
             builder.Services.AddSingleton<Validator>();
             builder.Services.AddTransient<LoginPage>();
             builder.Services.AddTransient<ForgotPasswordViewModel>();
+            builder.Services.AddSingleton<CurrentGeolocationService>();
             builder.Services.AddTransient<NewPasswordPage>();
             builder.Services.AddTransient<RegisterViewModel>();
+            builder.Services.AddTransient<MapPage>();
+            builder.Services.AddTransient<MapViewModel>();
             builder.Services.AddTransient<VerifyCodePage>();
             builder.Services.AddTransient<SendCodePage>();
             builder.Services.AddTransient<RegisterPage>();
+            builder.Services.AddSingleton<MapHelpers>();
             builder.Services.AddHttpClient<UserService>(httpClient =>
             {
 #if ANDROID
@@ -60,6 +78,16 @@ namespace SafeCityMobile
             {
 #if ANDROID
 
+                httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("ANDROID_BASE_URL")!);
+#else
+                httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("WINDOWS_BASE_URL")!);
+#endif
+            });
+
+            builder.Services.AddSingleton<IReportRepository, ReportRepository>();
+            builder.Services.AddHttpClient<IReportRepository, ReportRepository>(httpClient =>
+            {
+#if ANDROID
                 httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("ANDROID_BASE_URL")!);
 #else
                 httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("WINDOWS_BASE_URL")!);

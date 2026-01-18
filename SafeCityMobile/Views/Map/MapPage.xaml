@@ -2,11 +2,53 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SafeCityMobile.Views.Map.MapPage">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to MAP PAGE"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid RowDefinitions="*, 80, 40"
+          BackgroundColor="{StaticResource AppBackground}">
+
+        <VerticalStackLayout ZIndex="100"
+                             Spacing="4"
+                             HorizontalOptions="End"
+                             Margin="16">
+            <Border WidthRequest="60"
+                    HeightRequest="60"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{StaticResource AppBackground}"
+                    Padding="12">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CenterOnLocationCommand}"/>
+                </Border.GestureRecognizers>
+
+                <Image Source="mylocation.png"/>
+            </Border>
+            <Border WidthRequest="60"
+                    HeightRequest="60"
+                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{StaticResource AppBackground}"
+                    Padding="12">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RefreshMapCommand}"/>
+                </Border.GestureRecognizers>
+
+                <Image Source="refresh.png"/>
+            </Border>
+        </VerticalStackLayout>
+
+        <WebView x:Name="MapView"/>
+
+        <Button Text="Zgłoś zdarzenie"
+            Grid.Row="1"
+            Margin="10"
+            BackgroundColor="{StaticResource LightButton}"
+            FontAttributes="Bold"
+            FontSize="Body"
+            Command="{Binding ReportCommand}"/>
+
+        <Label Text="{Binding InfoText}"
+               Grid.Row="2"
+               TextColor="{StaticResource CoolRed}"
+               VerticalTextAlignment="Start"
+               HorizontalTextAlignment="Center"
+               FontSize="18"/>
+    </Grid>
 </ContentPage>
