@@ -13,7 +13,7 @@ public class MappedReportCategory
             new() {Category = ReportCategory.Traffic, Text = "Utrudnienie na drodze" },
             new() {Category = ReportCategory.Trash, Text = "Składowisko śmieci" },
             new() {Category = ReportCategory.Fight, Text = "Bójka" },
-            new() {Category = ReportCategory.IllegalParking, Text = "Źle zaparkowany samochód" },
+            new() {Category = ReportCategory.IllegalParking, Text = "Niepoprawnie zaparkowany samochód" },
             new() {Category = ReportCategory.IllegalGathering, Text = "Nielegalne zgromadzenie" },
             new() {Category = ReportCategory.Drone, Text = "Dron" },
             new() {Category = ReportCategory.Other, Text = "Inne" }

@@ -190,7 +190,7 @@ public class MapViewModel : INotifyPropertyChanged
             {
                 var query = new Dictionary<string, object>() { { "id", reportId } };
 
-                //await Shell.Current.GoToAsync(nameof(ReportDetailsPage), query);
+                await Shell.Current.GoToAsync(nameof(ReportDetailsPage), query);
             }
         }
     }

@@ -20,6 +20,7 @@ namespace SafeCityMobile
             Routing.RegisterRoute(nameof(VerifyCodePage), typeof(VerifyCodePage));
             Routing.RegisterRoute(nameof(SendCodePage), typeof(SendCodePage));
             Routing.RegisterRoute(nameof(ReportingPage), typeof(ReportingPage));
+            Routing.RegisterRoute(nameof(ReportDetailsPage), typeof(ReportDetailsPage));
         }
     }
 }
