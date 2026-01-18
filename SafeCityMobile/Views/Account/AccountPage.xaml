@@ -1,13 +1,85 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SafeCityMobile.Views.Account.AccountPage"
-             Title="AccountPage">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to ACCOUNT PAGE"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="SafeCityMobile.Views.Account.AccountPage">
+
+    <Grid BackgroundColor="{StaticResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Konto"
+           HorizontalTextAlignment="Center"
+           VerticalTextAlignment="Center"
+           TextColor="{StaticResource White}"
+           FontAttributes="Bold"
+           FontSize="18"
+           BackgroundColor="{StaticResource TitleBackground}"/>
+
+        <Label Text="{Binding Username}"
+               Grid.Row="1"
+               FontAttributes="Bold"
+               TextColor="{StaticResource White}"
+               FontSize="22"
+               VerticalTextAlignment="End"
+               HorizontalTextAlignment="Center"
+               Margin="4"/>
+
+        <Label Text="{Binding Email}"
+               Grid.Row="2"
+               VerticalTextAlignment="Start"
+               HorizontalTextAlignment="Center"
+               TextColor="{StaticResource BlueishGray}"
+               FontSize="16"
+               Margin="4"/>
+
+        <Border Grid.Row="3"
+                Margin="16"
+                Stroke="{StaticResource White}"
+                StrokeShape="RoundRectangle 10"
+                Padding="8">
+            <VerticalStackLayout Padding="16"
+                                 Spacing="16">
+                <Label Text="Całkowita liczba zgłoszeń"
+                       FontSize="16"
+                       TextColor="{StaticResource White}"
+                       FontFamily="SpaceGroteskRegular"/>
+
+                <Label Text="{Binding TotalReportCount}"
+                       FontSize="24"
+                       TextColor="{StaticResource White}"
+                       FontAttributes="Bold"
+                       FontFamily="SpaceGroteskBold"/>
+            </VerticalStackLayout>
+        </Border>
+
+        <VerticalStackLayout Grid.Row="4"
+                             Spacing="4"
+                             Margin="8">
+
+            <Button Text="Historia zgłoszeń"
+                    Style="{StaticResource LightButtonStyle}"
+                    Command="{Binding ReportHistoryCommand}"/>
+
+            <Button Text="Zmień hasło"
+                    Style="{StaticResource DarkButtonStyle}"
+                    Command="{Binding ChangePassworkCommand}"/>
+
+            <Button Text="Wyloguj się"
+                    Style="{StaticResource DarkButtonStyle}"
+                    Command="{Binding LogoutCommand}"/>
+
+        </VerticalStackLayout>
+
+        <Label Grid.Row="5"
+               Text="{Binding ErrorText}"
+               HorizontalTextAlignment="Center"
+               TextColor="{StaticResource CoolRed}"
+               FontSize="20"/>
+    </Grid>
 </ContentPage>
