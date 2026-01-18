@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using SafeCityMobile.Common;
 using SafeCityMobile.Reporting;
+using SafeCityMobile.User;
 using SafeCityMobile.Views.Map;
 using System.ComponentModel;
 
@@ -11,12 +13,16 @@ public class ReportDetailsViewModel : INotifyPropertyChanged, IQueryAttributable
     private event Action? ReportIdRetrieved;
 
     private readonly IReportRepository _reportRepository;
+    private readonly AuthService _authService;
+    private readonly DialogService _dialogService;
 
     private Guid _reportId;
     private bool _idRetrieved = false;
 
     public IAsyncRelayCommand ReportCommand { get; }
     public IAsyncRelayCommand ReturnCommand { get; }
+    public IAsyncRelayCommand EditCommand { get; }
+    public IAsyncRelayCommand DeleteCommand { get; }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
@@ -114,13 +120,30 @@ public class ReportDetailsViewModel : INotifyPropertyChanged, IQueryAttributable
         }
     }
 
+    private bool _isReportAuthor = false;
+    public bool IsReportAuthor
+    {
+        get => _isReportAuthor;
+        set
+        {
+            _isReportAuthor = value;
+            OnPropertyChanged(nameof(IsReportAuthor));
+        }
+    }
 
-    public ReportDetailsViewModel(IReportRepository reportRepository)
+
+    public ReportDetailsViewModel(IReportRepository reportRepository, 
+        AuthService authService,
+        DialogService dialogService)
     {
         _reportRepository = reportRepository;
+        _authService = authService;
+        _dialogService = dialogService;
         
         ReportCommand = new AsyncRelayCommand(ReportHandler);
         ReturnCommand = new AsyncRelayCommand(ReturnHandler);
+        EditCommand = new AsyncRelayCommand(EditCommandHandler);
+        DeleteCommand = new AsyncRelayCommand(DeleteCommandHandler);
 
         ReportIdRetrieved += async () => await InitDataAsync();
     }
@@ -143,6 +166,16 @@ public class ReportDetailsViewModel : INotifyPropertyChanged, IQueryAttributable
             ReportComment = string.IsNullOrEmpty(report.Message) ? "brak" : report.Message;
             Timestamp = report.ReportedAt;
             Category = report.Category;
+
+
+            if (!_authService.IsLoggedIn())
+                return;
+
+            var userId = _authService.UserId;
+            if (userId == report.UserId)
+            {
+                IsReportAuthor = true;
+            }
         }
     }
 
@@ -154,6 +187,28 @@ public class ReportDetailsViewModel : INotifyPropertyChanged, IQueryAttributable
     private async Task ReturnHandler()
     {
         await Shell.Current.GoToAsync(nameof(MapPage));
+    }
+
+    private async Task EditCommandHandler()
+    {
+
+    }
+
+    private async Task DeleteCommandHandler()
+    {
+        bool confirmed = await _dialogService.ShowConfirmationAsync("Usuń zgłoszenie", 
+            "Czy na pewno chcesz usunąć to zgłoszenie?", 
+            "Tak", 
+            "Nie");
+
+        if (!confirmed)
+            return;
+
+        var result = await _reportRepository.DeleteReportByIdAsync(_reportId);
+        if (result.Success)
+            await Shell.Current.GoToAsync(nameof(MapPage));
+
+        InfoLabel = "Nie udało się usunąć zgłoszenia";
     }
 
 

@@ -77,12 +77,34 @@
                              Spacing="12"
                              VerticalOptions="End"
                              Margin="16">
-            <Button ImageSource="flag.png"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    HorizontalOptions="Start"
-                    BackgroundColor="{StaticResource DarkButton}"
-                    Command="{Binding ReportCommand}"/>
+            <Grid ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Button ImageSource="flag.png"
+                        WidthRequest="50"
+                        HeightRequest="50"
+                        HorizontalOptions="Start"
+                        BackgroundColor="{StaticResource DarkButton}"
+                        Command="{Binding ReportCommand}"/>
+
+                <Button Text="Edytuj"
+                        Grid.Column="1"
+                        BackgroundColor="{StaticResource LightButton}"
+                        IsVisible="{Binding IsReportAuthor}"
+                        IsEnabled="{Binding IsReportAuthor}"
+                        Command="{Binding EditCommand}"/>
+
+                <Button Text="Usuń"
+                        Grid.Column="2"
+                        BackgroundColor="{StaticResource RedButton}"
+                        IsVisible="{Binding IsReportAuthor}"
+                        IsEnabled="{Binding IsReportAuthor}"
+                        Command="{Binding DeleteCommand}"/>
+            </Grid>
 
             <Button Text="Powrót"
                     HeightRequest="48"
