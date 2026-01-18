@@ -79,7 +79,8 @@ namespace SafeCityMobile
             builder.Services.AddTransient<SendCodePage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddSingleton<MapHelpers>();
-            
+            builder.Services.AddSingleton<DialogService>();
+
             builder.Services.AddHttpClient<UserService>(httpClient =>
             {
 #if ANDROID

@@ -11,6 +11,7 @@ public interface IReportRepository
     Task<ApiResponse<Report>> SaveReportAsync(ReportRequestDto report);
     Task<ApiResponse<List<Report>>> GetAllReportsAsync();
     Task<ApiResponse<Report>> GetReportByIdAsync(Guid id);
+    Task<ApiResponse<bool>> DeleteReportByIdAsync(Guid id);
 }
 
 public class ReportRepository : IReportRepository
@@ -86,5 +87,20 @@ public class ReportRepository : IReportRepository
         }
 
         return ApiResponse<Report>.Fail(new FailedResponse() { Message = "Failed to retrieve reports data" });
+    }
+
+    public async Task<ApiResponse<bool>> DeleteReportByIdAsync(Guid id)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"/api/reports/{id}");
+
+        var token = await _authService.GetTokenAsync();
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+            return ApiResponse<bool>.Ok(true);
+
+        return ApiResponse<bool>.Fail(new FailedResponse() { Message = "Failed to delete a report" });
     }
 }

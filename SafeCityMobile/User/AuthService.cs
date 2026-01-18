@@ -4,6 +4,7 @@ namespace SafeCityMobile.User;
 
 public class AuthService
 {
+    public Guid? UserId { get; set; } = null;
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
@@ -18,6 +19,7 @@ public class AuthService
         {
             await SecureStorage.Default.SetAsync("access_token", dto.Token);
 
+            UserId = dto.UserId;
             Username = dto.Username;
             Email = dto.Email;
 
