@@ -22,7 +22,7 @@ public class UserInfoRestRepository : IUserInfoRepository
     {
         try
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/api/drone-reports/my/count");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/api/reports/my/count");
 
             var token = await _authService.GetTokenAsync();
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

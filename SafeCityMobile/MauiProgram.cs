@@ -5,6 +5,7 @@ using SafeCityMobile.User;
 using SafeCityMobile.User.Repositories;
 using SafeCityMobile.ViewModels.Account;
 using SafeCityMobile.Views.Account;
+using SafeCityMobile.Views.Account.ForgotPassword;
 using SafeCityMobile.Views.Settings;
 using System.Text.Json;
 
@@ -36,6 +37,15 @@ namespace SafeCityMobile
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<AppState>();
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddSingleton<Validator>();
+            builder.Services.AddTransient<LoginPage>();
+            builder.Services.AddTransient<ForgotPasswordViewModel>();
+            builder.Services.AddTransient<NewPasswordPage>();
+            builder.Services.AddTransient<RegisterViewModel>();
+            builder.Services.AddTransient<VerifyCodePage>();
+            builder.Services.AddTransient<SendCodePage>();
+            builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddHttpClient<UserService>(httpClient =>
             {
 #if ANDROID
