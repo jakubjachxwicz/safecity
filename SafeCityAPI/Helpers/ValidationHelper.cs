@@ -134,4 +134,54 @@ public static class ValidationHelper
         errorMessage = string.Empty;
         return true;
     }
+    
+    /// <summary>
+    /// Lista dozwolonych kategorii zgłoszeń
+    /// </summary>
+    private static readonly HashSet<string> ValidCategories = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "traffic",
+        "trash",
+        "fight",
+        "illegal_parking",
+        "illega_gathering",
+        "drone",
+        "other"
+    };
+
+    /// <summary>
+    /// Waliduje kategorię zgłoszenia.
+    /// </summary>
+    /// <param name="category">Kategoria do walidacji</param>
+    /// <param name="errorMessage">Komunikat błędu jeśli walidacja nie powiodła się</param>
+    /// <returns>True jeśli kategoria jest prawidłowa, false w przeciwnym razie</returns>
+    public static bool ValidateCategory(string? category, out string errorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(category))
+        {
+            errorMessage = string.Empty;
+            return true; // Pusta kategoria = domyślnie "other"
+        }
+
+        if (!ValidCategories.Contains(category))
+        {
+            errorMessage = $"INVALID_CATEGORY: Category must be one of: {string.Join(", ", ValidCategories)}";
+            return false;
+        }
+
+        errorMessage = string.Empty;
+        return true;
+    }
+
+    /// <summary>
+    /// Normalizuje kategorię (lowercase, domyślna wartość)
+    /// </summary>
+    public static string NormalizeCategory(string? category)
+    {
+        if (string.IsNullOrWhiteSpace(category))
+            return "other";
+    
+        var normalized = category.Trim().ToLowerInvariant();
+        return ValidCategories.Contains(normalized) ? normalized : "other";
+    }
 }
