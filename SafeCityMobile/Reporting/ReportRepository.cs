@@ -10,6 +10,7 @@ public interface IReportRepository
 {
     Task<ApiResponse<Report>> SaveReportAsync(ReportRequestDto report);
     Task<ApiResponse<List<Report>>> GetAllReportsAsync();
+    Task<ApiResponse<Report>> GetReportByIdAsync(Guid id);
 }
 
 public class ReportRepository : IReportRepository
@@ -67,5 +68,23 @@ public class ReportRepository : IReportRepository
         }
 
         return ApiResponse<List<Report>>.Fail(new FailedResponse() { Message = "Failed to retrieve reports data" });
+    }
+
+    public async Task<ApiResponse<Report>> GetReportByIdAsync(Guid id)
+    {
+        var response = await _client.GetAsync($"/api/reports/{id}");
+        var stringResponse = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var dto = JsonSerializer.Deserialize<Report>(stringResponse, _jsonSerializerOptions);
+            if (dto is not null)
+            {
+                return ApiResponse<Report>.Ok(dto);
+            }
+            return ApiResponse<Report>.Fail(new FailedResponse() { Message = "Failed to deserialize API response" });
+        }
+
+        return ApiResponse<Report>.Fail(new FailedResponse() { Message = "Failed to retrieve reports data" });
     }
 }
