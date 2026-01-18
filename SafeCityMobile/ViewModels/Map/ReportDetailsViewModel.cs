@@ -191,7 +191,14 @@ public class ReportDetailsViewModel : INotifyPropertyChanged, IQueryAttributable
 
     private async Task EditCommandHandler()
     {
+        var paramDict = new Dictionary<string, object>
+        {
+            { "report_id", _reportId },
+            { "comment", ReportComment },
+            { "category", Category }
+        };
 
+        await Shell.Current.GoToAsync(nameof(EditReportPage), paramDict);
     }
 
     private async Task DeleteCommandHandler()

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SafeCityMobile.Views.Map.EditReportPage"
+             BackgroundColor="{StaticResource AppBackground}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource White}"/>
+            </Style>
+            <Style TargetType="Label" x:Key="Caption">
+                <Setter Property="TextColor" Value="{StaticResource BlueishGray}"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <Style TargetType="Label" x:Key="Value">
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Edytuj zgłoszenie"
+                     BackgroundColor="{StaticResource TitleBackground}"
+                     FontSize="18"
+                     FontAttributes="Bold"
+                     HorizontalTextAlignment="Center"
+                     VerticalTextAlignment="Center"/>
+
+        <VerticalStackLayout Grid.Row="1"
+                             Margin="16"
+                             Spacing="6">
+
+            <Label Text="Komentarz"
+                   Style="{StaticResource Caption}"/>
+
+            <Border StrokeShape="RoundRectangle 12"
+                    Stroke="Transparent"
+                    HeightRequest="100">
+                <Editor BackgroundColor="{StaticResource TitleBackground}"
+                        Text="{Binding Comment}"
+                        PlaceholderColor="{StaticResource BlueishGray}"
+                        TextColor="{StaticResource White}"
+                        Placeholder="Wpisz komentarz"/>
+            </Border>
+        </VerticalStackLayout>
+
+        <Border Grid.Row="2"
+                StrokeShape="RoundRectangle 12"
+                Stroke="Transparent"
+                Margin="16, 0, 16, 16">
+            <Picker Title="Wybierz kategorię zgłoszenia"
+                    TextColor="{StaticResource White}"
+                    TitleColor="{StaticResource White}"
+                    BackgroundColor="{StaticResource TitleBackground}"
+                    ItemsSource="{Binding ReportCategories}"
+                    ItemDisplayBinding="{Binding Text}"
+                    SelectedItem="{Binding SelectedCategory}"/>
+        </Border>
+
+
+        <VerticalStackLayout Grid.Row="3"
+                             Spacing="12"
+                             VerticalOptions="End"
+                             Margin="0, 0, 0, 12">
+            <Label Text="{Binding InfoText}"
+                   VerticalTextAlignment="Start"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{StaticResource CoolRed}"/>
+            
+            <Button Text="Zapisz"
+                    WidthRequest="300"
+                    HeightRequest="48"
+                    FontAttributes="Bold"
+                    BackgroundColor="{StaticResource LightButton}"
+                    Command="{Binding SaveCommand}"/>
+
+            <Button Text="Anuluj"
+                    WidthRequest="200"
+                    HeightRequest="40"
+                    BackgroundColor="{StaticResource RedButton}"
+                    Command="{Binding CancelCommand}"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
