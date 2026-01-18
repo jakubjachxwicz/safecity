@@ -56,12 +56,30 @@
             iconAnchor: [16, 48],
             popupAnchor: [0, -48]
         });
+        var dronePin = L.icon({
+            iconUrl: 'dronepin.png',
+            iconSize: [32, 48],
+            iconAnchor: [16, 48],
+            popupAnchor: [0, -48]
+        });
         var otherPin = L.icon({
             iconUrl: 'otherpin.png',
             iconSize: [32, 48],
             iconAnchor: [16, 48],
             popupAnchor: [0, -48]
         });
+
+        const mapCategoryToPin = (category) => {
+            switch (category) {
+                case 'Traffic': return trafficPin;
+                case 'Trash': return trashPin;
+                case 'Fight': return fightPin;
+                case 'IllegalParking': return illegalParkingPin;
+                case 'IllegalGathering': return illegalGatheringPin;
+                case 'Drone': return dronePin;
+                default: return otherPin;
+            }
+        };
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -71,14 +89,12 @@
         var markers = {};
         var userLocation;
 
-        // add categories handling
-        function addMarker(id, lat, lng) {
+        function addMarker(id, lat, lng, category) {
             if (markers[id]) {
                 map.removeLayer(markers[id]);
             }
 
-            //var icon = verified ? bluePin : grayPin;
-            var icon = otherPin;
+            var icon = mapCategoryToPin(category);
 
             var marker = L.marker([lat, lng], { icon: icon }).addTo(map);
 

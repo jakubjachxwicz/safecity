@@ -14,6 +14,10 @@ using SafeCityMobile.Views.Map;
 using SafeCityMobile.Views.Settings;
 using System.Text.Json;
 
+#if ANDROID
+    using SafeCityMobile.Platforms.Android;
+#endif
+
 namespace SafeCityMobile
 {
     public static class MauiProgram
@@ -48,6 +52,13 @@ namespace SafeCityMobile
 #endif
             });
 
+            builder.ConfigureMauiHandlers(handlers =>
+            {
+#if ANDROID
+                handlers.AddHandler(typeof(Picker), typeof(CustomPickerHandler));
+#endif
+            });
+
             builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<AppState>();
@@ -59,11 +70,14 @@ namespace SafeCityMobile
             builder.Services.AddTransient<NewPasswordPage>();
             builder.Services.AddTransient<RegisterViewModel>();
             builder.Services.AddTransient<MapPage>();
+            builder.Services.AddTransient<ReportingPage>();
+            builder.Services.AddTransient<ReportingViewModel>();
             builder.Services.AddTransient<MapViewModel>();
             builder.Services.AddTransient<VerifyCodePage>();
             builder.Services.AddTransient<SendCodePage>();
             builder.Services.AddTransient<RegisterPage>();
             builder.Services.AddSingleton<MapHelpers>();
+            
             builder.Services.AddHttpClient<UserService>(httpClient =>
             {
 #if ANDROID
