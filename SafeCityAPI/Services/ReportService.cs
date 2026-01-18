@@ -39,6 +39,7 @@ public class ReportService : IReportService
             ReportedAt = DateTime.UtcNow,
             Latitude = request.Latitude,
             Longitude = request.Longitude,
+            Category = request.Category,
             Message = request.Description?.Trim(),
             IpAddress = ipAddress,
             UserId = userId
@@ -56,6 +57,7 @@ public class ReportService : IReportService
             ReportedAt = report.ReportedAt,
             Latitude = report.Latitude,
             Longitude = report.Longitude,
+            Category = report.Category,
             Message = report.Message,
             UserId = report.UserId,      
             IpAddress = report.IpAddress 
@@ -78,6 +80,7 @@ public class ReportService : IReportService
             ReportedAt = r.ReportedAt,
             Latitude = r.Latitude,
             Longitude = r.Longitude,
+            Category = r.Category,
             Message = r.Message,
             UserId = r.UserId,      
             IpAddress = r.IpAddress 
@@ -114,6 +117,7 @@ public class ReportService : IReportService
             ReportedAt = r.ReportedAt,
             Latitude = r.Latitude,
             Longitude = r.Longitude,
+            Category = r.Category,
             Message = r.Message,
             UserId = r.UserId,
             IpAddress = r.IpAddress
@@ -138,6 +142,7 @@ public class ReportService : IReportService
             ReportedAt = report.ReportedAt,
             Latitude = report.Latitude,
             Longitude = report.Longitude,
+            Category = report.Category,
             Message = report.Message,
             UserId = report.UserId,
             IpAddress = report.IpAddress
@@ -202,6 +207,7 @@ public class ReportService : IReportService
             ReportedAt = r.ReportedAt,
             Latitude = r.Latitude,
             Longitude = r.Longitude,
+            Category = r.Category,
             Message = r.Message,
             UserId = r.UserId,
             IpAddress = r.IpAddress

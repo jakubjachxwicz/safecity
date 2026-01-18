@@ -28,6 +28,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.ReportedAt).HasColumnName("reported_at");
             entity.Property(e => e.Latitude).HasColumnName("latitude");
             entity.Property(e => e.Longitude).HasColumnName("longitude");
+            entity.Property(e => e.Category)
+                .HasColumnName("category")
+                .HasConversion<string>()
+                .HasMaxLength(50)
+                .HasDefaultValue(ReportCategory.Other);
             entity.Property(e => e.Message).HasColumnName("message");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.IpAddress).HasColumnName("ip_address");
@@ -35,6 +40,7 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.ReportedAt);
             entity.HasIndex(e => e.UserId);
             entity.HasIndex(e => e.IpAddress);
+            entity.HasIndex(e => e.Category);
         });
 
         // User -> users
