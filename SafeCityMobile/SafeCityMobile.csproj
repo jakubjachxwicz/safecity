@@ -115,6 +115,9 @@
 	  <MauiXaml Update="Views\Map\ReportDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Map\ReportHistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Map\ReportingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

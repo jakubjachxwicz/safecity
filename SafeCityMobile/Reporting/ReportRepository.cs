@@ -10,6 +10,7 @@ public interface IReportRepository
 {
     Task<ApiResponse<Report>> SaveReportAsync(ReportRequestDto report);
     Task<ApiResponse<List<Report>>> GetAllReportsAsync();
+    Task<ApiResponse<List<Report>>> GetReportsForUser();
     Task<ApiResponse<Report>> GetReportByIdAsync(Guid id);
     Task<ApiResponse<bool>> DeleteReportByIdAsync(Guid id);
     Task<ApiResponse<Report>> UpdateReportAsync(Guid reportId, ReportUpdateRequestDto report);
@@ -127,5 +128,28 @@ public class ReportRepository : IReportRepository
         }
 
         return ApiResponse<Report>.Fail(new FailedResponse() { Message = "Failed to save report data" });
+    }
+
+    public async Task<ApiResponse<List<Report>>> GetReportsForUser()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/reports/my/history");
+
+        var token = await _authService.GetTokenAsync();
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _client.SendAsync(request);
+        var stringResponse = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var dto = JsonSerializer.Deserialize<IEnumerable<Report>>(stringResponse, _jsonSerializerOptions)?.ToList();
+            if (dto is not null)
+            {
+                return ApiResponse<List<Report>>.Ok(dto);
+            }
+            return ApiResponse<List<Report>>.Fail(new FailedResponse() { Message = "Failed to deserialize API response" });
+        }
+
+        return ApiResponse<List<Report>>.Fail(new FailedResponse() { Message = "Failed to retrieve reports data" });
     }
 }

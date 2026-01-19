@@ -2,6 +2,7 @@
 using SafeCityMobile.User;
 using SafeCityMobile.User.Repositories;
 using SafeCityMobile.Views.Account;
+using SafeCityMobile.Views.Map;
 using System.ComponentModel;
 using System.Diagnostics;
 
@@ -89,9 +90,7 @@ public class AccountPageViewModel : INotifyPropertyChanged
 
     private async Task ReportHistoryHandler()
     {
-        //await Shell.Current.GoToAsync(nameof(ReportHistoryPage));
-
-        Trace.WriteLine($"ReportHistoryHandler");
+        await Shell.Current.GoToAsync(nameof(ReportHistoryPage));
     }
 
     private async Task ChangePasswordHandler()
